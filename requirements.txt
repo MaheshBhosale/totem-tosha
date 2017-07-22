@@ -1,2 +1,2 @@
-Flask
-gunicorn
+Flask==0.10.1
+future==0.16.0

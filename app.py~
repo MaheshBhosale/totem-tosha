@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 
-import urllib
+from __future__ import print_function
+from future.standard_library import install_aliases
+install_aliases()
+
+from urllib.parse import urlparse, urlencode
+from urllib.request import urlopen, Request
+from urllib.error import HTTPError
+
 import json
 import os
 
@@ -18,14 +25,27 @@ def webhook():
 
     print("Request:")
     print(json.dumps(req, indent=4))
-
-    res = makeWebhookResult(req)
-
     res = json.dumps(res, indent=4)
     print(res)
-    r = make_response(res)
+    result = req.get("result")
+    parameters = result.get("parameters")
+    track_id = parameters.get("track-id")
+
+    speech = "Your track-id is " + track_id;
+
+    print("Response:")
+    print(speech)
+
+    r = {
+        "speech": speech,
+        "displayText": speech,
+        #"data": {},
+        # "contextOut": [],
+        "source": "apiai-onlinestore-shipping"
+    }
     r.headers['Content-Type'] = 'application/json'
     return r
+}
 
 def makeWebhookResult(req):
     result = req.get("result")
