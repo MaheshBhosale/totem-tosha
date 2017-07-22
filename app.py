@@ -32,7 +32,7 @@ def makeWebhookResult(req):
     parameters = result.get("parameters")
     track_id = parameters.get("track-id")
  
-    speech = "Fuck shit " + track_id;
+    speech = "Your tracking ID is " + track_id;
  
     print("Response:")
     print(speech)
