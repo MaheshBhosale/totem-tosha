@@ -1,0 +1,15 @@
+<ns0:KnownTrackingRequest xmlns:ns0="http://www.dhl.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.dhl.com       TrackingRequestKnown.xsd">
+	<Request>
+		<ServiceHeader>
+			<MessageTime>2002-06-25T11:28:56-08:00</MessageTime>
+			<MessageReference>1234567890123456789012345678</MessageReference>
+			<SiteID>DServiceVal</SiteID>
+			<Password>testServVal</Password>
+		</ServiceHeader>
+	</Request>
+	<LanguageCode>en</LanguageCode>
+	<AWBNumber>8564385550</AWBNumber>
+	<LevelOfDetails>ALL_CHECK_POINTS</LevelOfDetails>
+	<PiecesEnabled>S</PiecesEnabled>
+	<CountryCode>US</CountryCode>
+</ns0:KnownTrackingRequest>
