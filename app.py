@@ -62,7 +62,7 @@ def process(req):
     if root[1][1][0].text != 'success':
         text += "No shipment data found\nPlease check your AWB number and try again"
         speech = "No shipment data found\nPlease check your AWB number and try again"
-        return text
+        return text, speech
     text += "Shippment information:\n"
     text += "Shipment started at " + root[1][2][0][0].text +" " + root[1][2][0][1].text + "\n"
     speech = "Shipment started at " + root[1][2][0][0].text +" " + root[1][2][0][1].text + "\n"
