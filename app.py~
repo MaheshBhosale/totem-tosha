@@ -37,12 +37,12 @@ def makeWebhookResult(req):
     parameters = result.get("parameters")
     track_id = parameters.get("track-id")
     xml_generate(track_id)
-    response = do_request()
+    text, speech = do_request()
     print("Response:")
  
     return {
          "speech": speech,
-         "displayText": speech,
+         "displayText": text,
          #"data": {},
          # "contextOut": [],
          "source": "apiai-onlinestore-shipping"
@@ -53,22 +53,29 @@ def do_request():
     print(request)
     url=HOST+API_URL
     req = requests.post(url, data=request, headers={'Content-Type': 'application/xml-www-form-urlencoded'})
-    speech = process(req)
-    return speech
+    text, speech = process(req)
+    return text, speech
 
 def process(req):
     root = ET.fromstring(req.content)
-    speech = "tracking information for AWB no:" + (root[1][0].text) + "\n"
+    text = "tracking information for AWB no:" + (root[1][0].text) + "\n"
     if root[1][1][0].text != 'success':
-        specch += "No shipment data found\nPlease check your AWB number and try again"
-        return
-    speech += "Shippment information:\n"
-    speech += "Shipment started at " + root[1][2][0][0].text +" " + root[1][2][0][1].text + "\n"
+        text += "No shipment data found\nPlease check your AWB number and try again"
+        speech = "No shipment data found\nPlease check your AWB number and try again"
+        return text
+    text += "Shippment information:\n"
+    text += "Shipment started at " + root[1][2][0][0].text +" " + root[1][2][0][1].text + "\n"
+    speech = "Shipment started at " + root[1][2][0][0].text +" " + root[1][2][0][1].text + "\n"
+    text += "Shipment ended at " + root[1][2][1][0].text +" " + root[1][2][1][1].text + "\n"
     speech += "Shipment ended at " + root[1][2][1][0].text +" " + root[1][2][1][1].text + "\n"
+    text += "Shippers name is " + root[1][2][2].text + "\n"
     speech += "Shippers name is " + root[1][2][2].text + "\n"
+    text += "Consignee name is " + root[1][2][4].text + "\n"
     speech += "Consignee name is " + root[1][2][4].text + "\n"
+    text += "Shipped on " + root[1][2][5].text + "\n"
     speech += "Shipped on " + root[1][2][5].text + "\n"  
-    return speech 
+    return text, speech
+ 
 def xml_generate(track_id):
     tree = ET.parse('sample.xml')
     root = tree.getroot()
