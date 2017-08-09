@@ -19,7 +19,7 @@ API_URL = "/XMLShippingServlet"
 app = Flask(__name__)
  
  
-@app.route('/webhook', methods=['POST'])
+#@app.route('/webhook', methods=['POST'])
 @app.route('/update', methods=['POST'])
 
 def webhook():
