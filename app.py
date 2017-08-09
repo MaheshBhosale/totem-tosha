@@ -7,8 +7,10 @@ import os
 from flask import Flask
 from flask import request
 from flask import make_response
+from datetime import datetime
 import xml.etree.ElementTree as ET
 import requests
+
 
 HOST = "https://xmlpitest-ea.dhl.com"
 API_URL = "/XMLShippingServlet"
@@ -18,6 +20,8 @@ app = Flask(__name__)
  
  
 @app.route('/webhook', methods=['POST'])
+@app.route('/update', methods=['POST'])
+
 def webhook():
     req = request.get_json(silent=True, force=True)
  
@@ -58,7 +62,7 @@ def do_request():
 
 def process(req):
     root = ET.fromstring(req.content)
-    text = "tracking information for AWB no:" + (root[1][0].text) + "\n"
+    text = "Tracking information for AWB no:" + (root[1][0].text) + "\n"
     if root[1][1][0].text != 'success':
         text += "No shipment data found\nPlease check your AWB number and try again"
         speech = "No shipment data found\nPlease check your AWB number and try again"
@@ -81,6 +85,7 @@ def xml_generate(track_id):
     root = tree.getroot()
     siteID = 'DServiceVal'
     password = 'testServVal'
+    naive_dt = datetime.now()
     message_time = '2003-06-25T11:28:56-08:00'
     message_reference = '1234567890123456789012345678'
     awb_number = track_id 
@@ -90,11 +95,16 @@ def xml_generate(track_id):
     root[0][0][3].text = password
     root[2].text = str(awb_number)	
     tree.write('output.xml')
- 
+
+def update():
+    return {
+        "speech": "Sample speech",
+        "displayText": "Sample Text",
+        # "data": {},
+        # "contextOut": [],
+        "source": "apiai-onlinestore-shipping"
+    }
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
- 
     print("Starting app on port"+ str(port))
- 
     app.run(debug=True, port=port, host='0.0.0.0')
-

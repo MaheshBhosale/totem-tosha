@@ -27,15 +27,40 @@ class Processor:
                 return
             else:
                 print(("Tracking request is Successful for ")+str(awb_number))
+
             if piece_enabled == 'p':
-                show_pieces(cur_AWBInfo_element)
-            elif piece_enabled == 'b':
-                show_shippment(cur_AWBInfo_element)
+                self.show_pieces(cur_AWBInfo_element)
+            elif piece_enabled == 's':
+                self.show_shippment(cur_AWBInfo_element)
             else:
-                show_pieces(cur_AWBInfo_element)
-                show_shippment(cur_AWBInfo_elemen)
+                self.show_pieces(cur_AWBInfo_element)
+                self.show_shippment(cur_AWBInfo_element)
 
     def show_pieces(self, cur_AWBInfo_element):
+        pieces = cur_AWBInfo_element['Pieces']
+        if type(pieces['PieceInfo']) == list:
+            l = pieces['PieceInfo']
+            for pieces_Info in l:
+                piece_details = pieces_Info['PieceDetails']
+                print("Piece details for peices are as follows,\n")
+                print("Depth of you package is "+piece_details['ActualDepth']+"\nWidth of the package is "+
+                      piece_details['ActualWidth']+"Height of you package is "+piece_details['ActualHeight'] +
+                      "Weight of you package is "+piece_details['ActualWeight']+piece_details["'WeightUnit"])
+        else:
+            pieces_Info = pieces['PieceInfo']
+            piece_details = pieces_Info['PieceDetails']
+            print("Piece details for peices are as follows,\n")
+            print("Depth of you package is " + piece_details['ActualDepth'] + "\nWidth of the package is " +
+                  piece_details['ActualWidth'] + "Height of you package is " + piece_details['ActualHeight'] +
+                  "Weight of you package is " + piece_details['ActualWeight'] + piece_details["'WeightUnit"])
+
+    def show_shippment(self, cur_AWBInfo_element):
+        shipmentinfo = cur_AWBInfo_element['ShipmentInfo']
+        print("Shipment informatyion is given below for your package\n Origin Service area :"+
+              shipmentinfo["OriginServiceArea"]["Description"]+"\nDestination Service area :"+
+              shipmentinfo["DestinationServiceArea"]["Description"]+"\nShipper name is :"+shipmentinfo["ShipperName"]+
+              "\nDate of shipment is "+shipmentinfo["ShipmentDate"])
+        if '' in shipmentinfo:
 
     def process_withLPNumber(self, lp_number):
         response_path = './UnitTestPlan/Tracking/Response/TrackingResponse_SingleLP_PieceEnabled_B_1.xml'
