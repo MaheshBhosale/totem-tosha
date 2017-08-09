@@ -97,13 +97,19 @@ def xml_generate(track_id):
 
 @app.route('/update', methods=['POST'])
 def update():
-    return {
+    res = {
         "speech": "Sample speech",
         "displayText": "Sample Text",
         # "data": {},
         # "contextOut": [],
         "source": "apiai-onlinestore-shipping"
     }
+    res = json.dumps(res, indent=4)
+    print(res)
+    r = make_response(res)
+    r.headers['Content-Type'] = 'application/json'
+    return r
+
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
     print("Starting app on port"+ str(port))
