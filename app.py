@@ -20,7 +20,6 @@ app = Flask(__name__)
  
  
 #@app.route('/webhook', methods=['POST'])
-@app.route('/update', methods=['POST'])
 
 def webhook():
     req = request.get_json(silent=True, force=True)
@@ -96,6 +95,7 @@ def xml_generate(track_id):
     root[2].text = str(awb_number)	
     tree.write('output.xml')
 
+@app.route('/update', methods=['POST'])
 def update():
     return {
         "speech": "Sample speech",
