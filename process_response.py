@@ -60,7 +60,8 @@ class Processor:
               shipmentinfo["OriginServiceArea"]["Description"]+"\nDestination Service area :"+
               shipmentinfo["DestinationServiceArea"]["Description"]+"\nShipper name is :"+shipmentinfo["ShipperName"]+
               "\nDate of shipment is "+shipmentinfo["ShipmentDate"])
-        if '' in shipmentinfo:
+        if 'EstDlvyDate' in shipmentinfo:
+            print("\nEstimated date of delivery is"+shipmentinfo['EstDlvyDate'])
 
     def process_withLPNumber(self, lp_number):
         response_path = './UnitTestPlan/Tracking/Response/TrackingResponse_SingleLP_PieceEnabled_B_1.xml'
