@@ -11,10 +11,11 @@ from datetime import datetime
 import xml.etree.ElementTree as ET
 import requests
 
+from process_response import Processor
 
 HOST = "https://xmlpitest-ea.dhl.com"
 API_URL = "/XMLShippingServlet"
- 
+awb = 0
 # Flask app should start in global layout
 app = Flask(__name__)
  
@@ -56,29 +57,13 @@ def do_request():
     print(request)
     url=HOST+API_URL
     req = requests.post(url, data=request, headers={'Content-Type': 'application/xml-www-form-urlencoded'})
-    text, speech = process(req)
+    with open('./result.xml', 'w') as f:
+        f.write(req.text)
+    processor = Processor("./result.xml")
+    text, speech = processor.process_withAWBNumber(awb, 's', 'yes')
     return text, speech
 
-def process(req):
-    root = ET.fromstring(req.content)
-    text = "Tracking information for AWB no:" + (root[1][0].text) + "\n"
-    if root[1][1][0].text != 'success':
-        text += "No shipment data found\nPlease check your AWB number and try again"
-        speech = "No shipment data found\nPlease check your AWB number and try again"
-        return text, speech
-    text += "Shippment information:\n"
-    text += "Shipment started at " + root[1][2][0][0].text +" " + root[1][2][0][1].text + "\n"
-    speech = "Shipment started at " + root[1][2][0][0].text +" " + root[1][2][0][1].text + "\n"
-    text += "Shipment ended at " + root[1][2][1][0].text +" " + root[1][2][1][1].text + "\n"
-    speech += "Shipment ended at " + root[1][2][1][0].text +" " + root[1][2][1][1].text + "\n"
-    text += "Shippers name is " + root[1][2][2].text + "\n"
-    speech += "Shippers name is " + root[1][2][2].text + "\n"
-    text += "Consignee name is " + root[1][2][4].text + "\n"
-    speech += "Consignee name is " + root[1][2][4].text + "\n"
-    text += "Shipped on " + root[1][2][5].text + "\n"
-    speech += "Shipped on " + root[1][2][5].text + "\n"  
-    return text, speech
- 
+
 def xml_generate(track_id):
     tree = ET.parse('sample.xml')
     root = tree.getroot()
@@ -92,6 +77,8 @@ def xml_generate(track_id):
     root[0][0][1].text = message_reference
     root[0][0][2].text = siteID
     root[0][0][3].text = password
+    global awb
+    awb = awb_number
     root[2].text = str(awb_number)	
     tree.write('output.xml')
 

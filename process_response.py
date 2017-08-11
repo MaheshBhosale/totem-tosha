@@ -3,11 +3,8 @@ import xmltodict
 
 class Processor:
     def process_withAWBNumber(self, awb_number, piece_enabled, more_info):
-        response_path = './UnitTestPlan/Tracking/Response/TrackingResponse_SingleAWB_CheckpointWithEventRemarks.xml'
-        print(response_path)
-        tree = ET.parse(response_path)
         st = None
-        with open('/home/mahesh/Mahesh/heroku-basic-flask/UnitTestPlan/Tracking/Response/TrackingResponse_SingleAWB_CheckpointWithEventRemarks.xml') as fd:
+        with open (self.response_path) as fd:
             doc = xmltodict.parse(fd.read())
             if 'res:TrackingResponse' in doc:
                 root = doc['res:TrackingResponse']
@@ -39,6 +36,7 @@ class Processor:
             else:
                 self.show_pieces(cur_AWBInfo_element, more_info)
                 self.show_shippment(cur_AWBInfo_element, more_info)
+            return self.response, self.response
 
     def show_pieces(self, cur_AWBInfo_element, more_info):
         pieces = cur_AWBInfo_element['Pieces']
@@ -46,17 +44,12 @@ class Processor:
             l = pieces['PieceInfo']
             for pieces_Info in l:
                 piece_details = pieces_Info['PieceDetails']
-                print("Piece details for peices are as follows,\n")
-                print("Depth of you package is "+piece_details['ActualDepth']+"\nWidth of the package is "+
-                      piece_details['ActualWidth']+"Height of you package is "+piece_details['ActualHeight'] +
-                      "Weight of you package is "+piece_details['ActualWeight']+piece_details["'WeightUnit"])
+                self.response += "Piece details for peices are as follows,\n Depth of you package is "+piece_details['ActualDepth']+"\nWidth of the package is "+piece_details['ActualWidth']+"Height of you package is "+piece_details['ActualHeight'] +"Weight of you package is "+piece_details['ActualWeight']+piece_details["'WeightUnit"]
         else:
             pieces_Info = pieces['PieceInfo']
             piece_details = pieces_Info['PieceDetails']
-            print("Piece details for peices are as follows,\n")
-            print("Depth of you package is " + piece_details['ActualDepth'] + "\nWidth of the package is " +
-                  piece_details['ActualWidth'] + "Height of you package is " + piece_details['ActualHeight'] +
-                  "Weight of you package is " + piece_details['ActualWeight'] + piece_details["'WeightUnit"])
+            self.response += "Piece details for peices are as follows,\n"
+            self.response += "Depth of you package is " + piece_details['ActualDepth'] + "\nWidth of the package is " +piece_details['ActualWidth'] + "Height of you package is " + piece_details['ActualHeight'] +"Weight of you package is " + piece_details['ActualWeight'] + piece_details["'WeightUnit"]
 
     def show_shippment(self, cur_AWBInfo_element, more_info):
         shipmentinfo = cur_AWBInfo_element['ShipmentInfo']
@@ -67,7 +60,7 @@ class Processor:
             l = shipmentinfo['ShipmentEvent']
             i = 1
             for shipment_event in l:
-                self.response += i + "Date:" + str(shipment_event['Date']) + "Time:" + str(shipment_event['Time']) + " " + str(shipment_event['ServiceEvent']['Description'])
+                self.response += "\n" + i + "Date:" + shipment_event['Date'] + "Time:" + shipment_event['Time'] + " " + shipment_event['ServiceEvent']['Description'] + "\n"
                 i += 1
 
     def process_withLPNumber(self, lp_number, piece_enabled, more_info):
@@ -110,8 +103,4 @@ class Processor:
     def __init__(self, response_path):
         self.response_path = response_path
         self.response = ""
-        self.more_response = ""
 
-
-processor = Processor('./UnitTestPlan/Tracking/Response/TrackingResponse_SingleAWB_CheckpointWithEventRemarks.xml')
-processor.process_withAWBNumber(6372653501, 's', 'yes')
