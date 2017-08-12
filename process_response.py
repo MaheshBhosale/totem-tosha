@@ -19,7 +19,7 @@ class Processor:
                 print(type(awb_number))
                 print(int(AWBInfo_element['AWBNumber']))
                 print(int(AWBInfo_element['AWBNumber']) == awb_number)
-                if int(AWBInfo_element['AWBNumber']) == awb_number:
+                if int(AWBInfo_element['AWBNumber']) == int(awb_number):
                     print ("------yes-------")
                     st = AWBInfo_element['Status']
                     break
