@@ -60,7 +60,8 @@ def do_request():
     with open('./result.xml', 'w') as f:
         f.write(req.text)
     processor = Processor("./result.xml")
-    text, speech = processor.process_withAWBNumber(awb, 's', 'yes')
+    speech = processor.process_withAWBNumber(awb, 's', 'yes')
+    text = speech
     return text, speech
 
 
