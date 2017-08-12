@@ -10,10 +10,10 @@ class Processor:
                 root = doc['res:TrackingResponse']
             elif 'req:TrackingResponse' in doc:
                 root = doc['req:TrackingResponse']
-            print(root)
             l = root['AWBInfo']
             for AWBInfo_element in l:
                 cur_AWBInfo_element = AWBInfo_element
+                print(cur_AWBInfo_element)
                 if int(AWBInfo_element['AWBNumber']) == awb_number:
                     st = AWBInfo_element['Status']
                     break
@@ -33,7 +33,6 @@ class Processor:
             else:
                 self.show_pieces(cur_AWBInfo_element, more_info)
                 self.show_shippment(cur_AWBInfo_element, more_info)
-            print(self.response)
             return self.response
 
     def show_pieces(self, cur_AWBInfo_element, more_info):
