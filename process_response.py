@@ -33,6 +33,7 @@ class Processor:
             else:
                 self.show_pieces(cur_AWBInfo_element, more_info)
                 self.show_shippment(cur_AWBInfo_element, more_info)
+            print(self.response)
             return self.response
 
     def show_pieces(self, cur_AWBInfo_element, more_info):
@@ -50,14 +51,15 @@ class Processor:
 
     def show_shippment(self, cur_AWBInfo_element, more_info):
         shipmentinfo = cur_AWBInfo_element['ShipmentInfo']
-        self.response += "Shipper name is :"+str(shipmentinfo["ShipperName"])+"\nDate of shipment is "+ (shipmentinfo["ShipmentDate"])
+        self.response += "\nShipment data for you package are as following:\n"
+        #self.response += "Shipper name is :"+shipmentinfo["ShipperName"]+"\nDate of shipment is "+shipmentinfo["ShipmentDate"]
         if 'EstDlvyDate' in shipmentinfo:
             self.response += "\nEstimated date of delivery is"+str(shipmentinfo['EstDlvyDate'])
         if more_info == "yes":
             l = shipmentinfo['ShipmentEvent']
             i = 1
             for shipment_event in l:
-                self.response += "\n" + i + "Date:" + shipment_event['Date'] + "Time:" + shipment_event['Time'] + " " + shipment_event['ServiceEvent']['Description'] + "\n"
+                self.response += "\n" + str(i) + ". Date:" + shipment_event['Date'] + " Time:" + shipment_event['Time'] + " " + shipment_event['ServiceEvent']['Description']
                 i += 1
 
     def process_withLPNumber(self, lp_number, piece_enabled, more_info):
@@ -100,4 +102,3 @@ class Processor:
     def __init__(self, response_path):
         self.response_path = response_path
         self.response = ""
-
