@@ -36,7 +36,7 @@ class Processor:
             else:
                 self.show_pieces(cur_AWBInfo_element, more_info)
                 self.show_shippment(cur_AWBInfo_element, more_info)
-            return self.response, self.response
+            return self.response
 
     def show_pieces(self, cur_AWBInfo_element, more_info):
         pieces = cur_AWBInfo_element['Pieces']
