@@ -14,15 +14,10 @@ class Processor:
             for AWBInfo_element in l:
                 cur_AWBInfo_element = AWBInfo_element
                 print(cur_AWBInfo_element)
-                print(int(AWBInfo_element['AWBNumber']))
-                print(awb_number)
-                print(type(awb_number))
-                print(int(AWBInfo_element['AWBNumber']))
-                print(int(AWBInfo_element['AWBNumber']) == awb_number)
                 if int(AWBInfo_element['AWBNumber']) == int(awb_number):
-                    print ("------yes-------")
                     st = AWBInfo_element['Status']
-                    break
+                    if 'ShipmentInfo' in st:
+                        break
             if st == None:
                 self.response += "Tracking request failed\n" + "Please check your AWBNumber"
                 return self.response
@@ -56,6 +51,7 @@ class Processor:
 
     def show_shippment(self, cur_AWBInfo_element, more_info):
         shipmentinfo = cur_AWBInfo_element['ShipmentInfo']
+        print(shipmentinfo)
         self.response += "\nShipment data for you package are as following:\n"
         #self.response += "Shipper name is :"+shipmentinfo["ShipperName"]+"\nDate of shipment is "+shipmentinfo["ShipmentDate"]
         if 'EstDlvyDate' in shipmentinfo:
