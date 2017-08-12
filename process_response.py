@@ -53,7 +53,7 @@ class Processor:
         shipmentinfo = cur_AWBInfo_element['ShipmentInfo']
         print(shipmentinfo)
         self.response += "\nShipment data for you package are as following:\n"
-        #self.response += "Shipper name is :"+shipmentinfo["ShipperName"]+"\nDate of shipment is "+shipmentinfo["ShipmentDate"]
+        self.response += "Shipper name is :"+shipmentinfo["ShipperName"]+"\nDate of shipment is "+shipmentinfo["ShipmentDate"]
         if 'EstDlvyDate' in shipmentinfo:
             self.response += "\nEstimated date of delivery is"+str(shipmentinfo['EstDlvyDate'])
         if more_info == "yes":
