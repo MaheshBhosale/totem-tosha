@@ -57,6 +57,8 @@ class Processor:
         if 'EstDlvyDate' in shipmentinfo:
             self.response += "\nEstimated date of delivery is"+str(shipmentinfo['EstDlvyDate'])
         if more_info == "yes":
+            if 'ShipmentEvent' not in shipmentinfo:
+                return
             l = shipmentinfo['ShipmentEvent']
             i = 1
             for shipment_event in l:
