@@ -15,6 +15,7 @@ class Processor:
                 cur_AWBInfo_element = AWBInfo_element
                 print(cur_AWBInfo_element)
                 if int(AWBInfo_element['AWBNumber']) == awb_number:
+                    print ("------yes-------")
                     st = AWBInfo_element['Status']
                     break
             if st == None:
