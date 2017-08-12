@@ -14,6 +14,8 @@ class Processor:
             for AWBInfo_element in l:
                 cur_AWBInfo_element = AWBInfo_element
                 print(cur_AWBInfo_element)
+                print(int(AWBInfo_element['AWBNumber']))
+                print(awb_number)
                 if int(AWBInfo_element['AWBNumber']) == awb_number:
                     print ("------yes-------")
                     st = AWBInfo_element['Status']
