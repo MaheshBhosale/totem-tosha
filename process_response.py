@@ -10,19 +10,16 @@ class Processor:
                 root = doc['res:TrackingResponse']
             elif 'req:TrackingResponse' in doc:
                 root = doc['req:TrackingResponse']
-            print(root['AWBInfo'])
-            if type(root['AWBInfo']) == list:
-                l = root['AWBInfo']
-                for AWBInfo_element in l:
-                    cur_AWBInfo_element = AWBInfo_element
-                    if int(AWBInfo_element['AWBNumber']) == awb_number:
-                        st = AWBInfo_element['Status']
-                        break
-                if st == None:
-                    self.response += "Tracking request failed\n" + "Please check your AWBNumber"
-                    return self.response
-            else:
-                st = root['AWBInfo']['Status']
+            print(root)
+            l = root['AWBInfo']
+            for AWBInfo_element in l:
+                cur_AWBInfo_element = AWBInfo_element
+                if int(AWBInfo_element['AWBNumber']) == awb_number:
+                    st = AWBInfo_element['Status']
+                    break
+            if st == None:
+                self.response += "Tracking request failed\n" + "Please check your AWBNumber"
+                return self.response
             if str(st['ActionStatus']) != "Success" and str(st['ActionStatus']) != "success":
                 self.response += "Tracking request failed\n"+str(st['Condition']['ConditionData'])
                 return self.response
